@@ -64,7 +64,8 @@ pip install -r requirements.txt
 # copy file `.env.template` to new file `.env`, and modify the params in `.env`.
 copy .env.template .env 
 
-# deploy stablediffusion service, stablediffusion-proxy service is recommended.
+# deploy stablediffusion service, stablediffusion-proxy service is recommended. 
+# see doc http://operategpt.cn/web/#/p/9cfc5cffa5120f8a520573f092f436d1
 python operategpt/provider/stablediffusion.py
 
 # execute project, generate file /data/operation_data/xxx.md
