@@ -1,0 +1,21 @@
+elasticsearch==8.9.0
+sqlalchemy==1.4.48
+beautifulsoup4==4.12.2
+requests== 2.30.0
+googlesearch-python==1.2.3
+fastapi==0.95.2
+
+
+setuptools~=65.6.3
+loguru~=0.7.0
+langchain~=0.0.142
+chromadb~=0.3.23
+pydantic~=1.10.7
+fire~=0.4.0
+flask~=2.3.2
+diffusers~=0.19.3
+uvicorn~=0.22.0
+tqdm~=4.64.1
+transformers~=4.28.0
+python-dotenv~=1.0.0
+torch~=2.0.0
