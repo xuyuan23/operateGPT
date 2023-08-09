@@ -1,7 +1,7 @@
 # OperateGPT: Taking Your Operations to the Next Level with Automation
 - Revolutionize Your Operations with One Sentence Automation: Utilizing large language models and multi-agents to generate operational copy, images, and videos with one-line requirements.
 
-![A software company consists of LLM-based roles](assets/OperateGPT_arch.png)
+![OperateGPT Process](assets/operateGPT_process.png)
 
 
 ## Supported Platform
@@ -69,7 +69,7 @@ copy .env.template .env
 python operategpt/provider/stablediffusion.py
 
 # execute project, generate file /data/operation_data/xxx.md
-python demo.py "what is MetaGPT?"
+python main.py "what is MetaGPT?"
 ```
 
 Note: maybe you should execute command `export OPENAI_API_KEY="sk-..."` to config your OPEN-AI-KEY Firstly.
