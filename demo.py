@@ -65,6 +65,7 @@ def search_relative_data_from_ds(query):
     """
     search_results = search(query, num_results=1, lang="en")
     first_result_url = next(search_results)
+    logger.info(f"first_result_url={first_result_url}")
     response = requests.get(first_result_url)
     soup = BeautifulSoup(response.text, "html.parser")
     ans = soup.get_text().replace("\n", "").replace("\r", "").replace("\t", "")
