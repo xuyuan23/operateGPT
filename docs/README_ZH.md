@@ -1,7 +1,7 @@
 # OperateGPT: 一句话需求即可完成运营的变革
 <div align="center">
 
-[**English**](docs/README_zh.md) |[**文档**](http://operategpt.cn/web/#/602177878/152973408)|
+[**English**](../README.md) |[**文档**](http://operategpt.cn/web/#/602177878/152973408)|
 </div>
 - 利用大语言模型和多智能体技术，通过一行需求自动生成运营文案、图片和视频，一键发送多个平台实现快速运营的变革
 

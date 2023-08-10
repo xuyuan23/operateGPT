@@ -1,7 +1,7 @@
 # OperateGPT: Revolutionize Your Operations with One-Line Requests
 <div align="center">
 
-[**简体中文**](docs/README_zh.md) |[**Documents**](http://operategpt.cn/web/#/602177878/152973408)|
+[**简体中文**](docs/README_ZH.md) |[**Documents**](http://operategpt.cn/web/#/602177878/152973408)|
 </div>
 
 - Using large language models and multi-agent technology, a single request can automatically generate marketing copy, images, and videos, and with one click, can be sent to multiple platforms, achieving a rapid transformation in marketing operations.
