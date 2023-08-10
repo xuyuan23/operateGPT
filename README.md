@@ -1,10 +1,15 @@
-# OperateGPT: Taking Your Operations to the Next Level with Automation
-- Revolutionize Your Operations with One Sentence Automation: Utilizing large language models and multi-agents to generate operational copy, images, and videos with one-line requirements.
+# OperateGPT: Revolutionize Your Operations with One-Line Requests
+<div align="center">
+
+[**简体中文**](docs/README_zh.md) |[**Documents**](http://operategpt.cn/web/#/602177878/152973408)|
+</div>
+
+- Using large language models and multi-agent technology, a single request can automatically generate marketing copy, images, and videos, and with one click, can be sent to multiple platforms, achieving a rapid transformation in marketing operations.
 
 ![OperateGPT Process](assets/operateGPT_process.png)
 
 
-## Supported Platform
+## Supported Platforms
 
 | Operate Platform | Supported   | API           | Notes |
 |------------------|-------------|---------------|-------|
@@ -36,7 +41,7 @@
 | text2vec-large-chinese   | Coming soon  |       |
 
 
-## Quick Start
+## Installation
 
 Firstly, download relative LLMs.
 ```commandline
