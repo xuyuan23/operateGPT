@@ -63,10 +63,10 @@ Then, download dependencies and launch your project.
 pip install -r requirements.txt
 
 # copy file `.env.template` to new file `.env`, and modify the params in `.env`.
-copy .env.template .env 
+cp .env.template .env 
 
 # deploy stablediffusion service, if StableDiffusion proxy is used, no need to execute it!
-python operategpt/provider/stablediffusion.py
+python operategpt/providers/stablediffusion.py
 
 python main.py "what is MetaGPT?"
 ```

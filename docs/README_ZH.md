@@ -62,10 +62,10 @@ git clone https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0
 pip install -r requirements.txt
 
 # 复制.env.template文件内容到新创建的.env文件中，并修改.env文件中的内容
-copy .env.template .env 
+cp .env.template .env 
 
 # 启动stablediffusion服务, 如果使用了StableDiffusion代理，则无需执行!
-python operategpt/provider/stablediffusion.py
+python operategpt/providers/stablediffusion.py
 
 # 执行项目，将会生成一个markdown文件 /data/operation_data/xxx.md
 python main.py "what is MetaGPT?"

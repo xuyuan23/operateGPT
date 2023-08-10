@@ -14,7 +14,7 @@ app = FastAPI()
 
 ROOT_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DATA_PATH = os.path.join(ROOT_PATH, "data")
-MODEL_PATH = os.path.join(ROOT_PATH, "model")
+MODEL_PATH = os.path.join(ROOT_PATH, "models")
 SD_MODEL = os.getenv("SD_MODEL", "stable-diffusion-xl-base-1.0")
 
 pipe = DiffusionPipeline.from_pretrained(
