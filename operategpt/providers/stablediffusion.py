@@ -23,7 +23,8 @@ pipe = DiffusionPipeline.from_pretrained(
     use_safetensors=True,
     variant="fp16",
 )
-pipe.to("cuda")
+device = "cuda" if torch.cuda.is_available() else "cpu"
+pipe.to(device)
 
 
 class SDPrompt(BaseModel):
@@ -44,9 +45,9 @@ def sd_request(sd_prompt: SDPrompt):
         image = pipe(prompt=prompt).images[0]
         tmp_dir = create_tmp_folder()
         img_name = f"{image_name}.{image_type}"
-        image.save(os.path.join(tmp_dir, img_name))
-
-        return {"success": True, "msg": "Generate file success"}
+        img_path = os.path.join(tmp_dir, img_name)
+        image.save(img_path)
+        return {"success": True, "msg": f"downloadUrl= {img_path}"}
     except Exception as e:
         return {"success": False, "msg": f"generate image error: {str(e)}"}
 

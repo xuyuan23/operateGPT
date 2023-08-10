@@ -44,38 +44,42 @@
 
 首先，下载相关模型
 ```commandline
+mkdir models & cd models
+
 # 下载embedding 模型，默认all-MiniLM-L6-v2，对于中文可以使用text2vec-large-chinese
 git lfs install 
 git clone https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2
 
-# 下载stabediffusion模型 (git仓库94GB，模型47GB)
+# 下载stabediffusion模型 (git仓库94GB，模型47GB), 推荐使用stablediffusion-proxy, 参考 https://github.com/xuyuan23/stablediffusion-proxy
 git lfs install 
 git clone https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0
-
 ```
 
 下载安装python项目依赖包，并启动项目
-```commandline
 
-# 创建一些可能需要的目录
-mkdir models
-mkdir data
-mkdir logs
-
+``` commandline
 # 安装python依赖包
 pip install -r requirements.txt
 
 # 复制.env.template文件内容到新创建的.env文件中，并修改.env文件中的内容
 copy .env.template .env 
 
-# 部署stablediffusion服务, 推荐使用stablediffusion-proxy,参考 http://operategpt.cn/web/#/p/9cfc5cffa5120f8a520573f092f436d1
+# 启动stablediffusion服务, 如果使用了StableDiffusion代理，则无需执行!
 python operategpt/provider/stablediffusion.py
 
 # 执行项目，将会生成一个markdown文件 /data/operation_data/xxx.md
 python main.py "what is MetaGPT?"
 ```
 
-注意: 你应该先执行命令配置你的OPEN-AI-KEY `export OPENAI_API_KEY="sk-..."`
+## 配置
+- 默认使用ChatGPT作为LLM, 首先你应该在`.env`中设置`OPEN_AI_KEY`， StableDiffusion使用代理则需要设置，否则需要在本地启动
+
+```properties
+OPEN_AI_KEY=sk-xxx
+
+# 如果你没有部署StableDiffusion，则无法生成图像
+SD_PROXY_URL=127.0.0.1:7860
+```
 
 ## 内容展示
 - 下面的内容完全是由OperateGPT生成: http://operategpt.cn/web/#/602177878/0

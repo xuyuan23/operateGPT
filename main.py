@@ -14,17 +14,12 @@ from operategpt.providers import sd_proxy
 from dotenv import load_dotenv
 
 load_dotenv(verbose=True, override=True)
-OPEN_AI_PROXY_SERVER_URL = os.getenv("OPEN_AI_PROXY_SERVER_URL")
+OPEN_AI_PROXY_SERVER_URL = os.getenv("OPEN_AI_PROXY_SERVER_URL", "https://api.openai.com/v1/chat/completions")
 OPEN_AI_KEY = os.getenv("OPEN_AI_KEY")
-VECTOR_STORE_TYPE = os.getenv("VECTOR_STORE_TYPE")
-EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL")
+VECTOR_STORE_TYPE = os.getenv("VECTOR_STORE_TYPE", "Chroma")
+EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "all-MiniLM-L6-v2")
 
-# OPEN_AI_PROXY_SERVER_URL="https://api.openai.com/v1/chat/completions"
-# OPEN_AI_KEY="YOUR-OPENAI-KEY"
-# VECTOR_STORE_TYPE="Chroma"
-# EMBEDDING_MODEL="all-MiniLM-L6-v2"
-
-OPERATE_PROMPT = """You are an operation expert, now please write a detailed operation article according to the following content, the format is beautiful and the content is attractive. Remarks: Be sure to author and analyze according to the content provided, and may include charts as appropriate, generate in Markdown format.
+OPERATE_PROMPT = """You are an operation expert, now please write a detailed operation article according to the following content, the format is beautiful and the content is attractive. Remarks: Be sure to author and analyze according to the content provided, the author is OperateGPT, and may include charts as appropriate, generate in Markdown format.
 content: 
 ```
 {0}
