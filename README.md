@@ -52,10 +52,15 @@ mkdir models & cd models
 git lfs install 
 git clone https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2
 
-# Size: 94 GB, so stablediffusion-proxy service is recommended, https://github.com/xuyuan23/stablediffusion-proxy
+# [Options]
+# Size: 94 GB, stablediffusion-proxy service is recommended, https://github.com/xuyuan23/stablediffusion-proxy
 git lfs install 
 git clone https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0
 
+# [Options]
+# Size: 10 GB, Text2Video service is recommended. https://github.com/xuyuan23/Text2Video
+git lfs install
+git clone https://huggingface.co/cerspense/zeroscope_v2_576w
 ```
 
 Then, download dependencies and launch your project.
@@ -65,8 +70,13 @@ pip install -r requirements.txt
 # copy file `.env.template` to new file `.env`, and modify the params in `.env`.
 cp .env.template .env 
 
+[Options]
 # deploy stablediffusion service, if StableDiffusion proxy is used, no need to execute it!
 python operategpt/providers/stablediffusion.py
+
+[Options]
+# deploy Text2Video service, if Text2Video proxy server is used, no need to execute it!
+python operategpt/providers/text2video.py
 
 python main.py "what is MetaGPT?"
 ```

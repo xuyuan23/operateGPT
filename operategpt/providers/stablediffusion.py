@@ -5,8 +5,9 @@ import torch
 import uvicorn
 from diffusers import DiffusionPipeline
 from fastapi import FastAPI
-from pydantic import BaseModel
 from dotenv import load_dotenv
+
+from operategpt.providers.base import T2ImgPrompt
 
 load_dotenv(verbose=True, override=True)
 
@@ -27,14 +28,8 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 pipe.to(device)
 
 
-class SDPrompt(BaseModel):
-    prompt: str = None
-    image_name: str = None
-    image_type: str = "png"
-
-
 @app.post("/generate_img")
-def sd_request(sd_prompt: SDPrompt):
+def sd_request(sd_prompt: T2ImgPrompt):
     prompt = sd_prompt.prompt
     image_name = sd_prompt.image_name
     image_type = sd_prompt.image_type
