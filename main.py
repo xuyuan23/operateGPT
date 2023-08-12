@@ -13,6 +13,9 @@ from operategpt.logs import logger
 from operategpt.providers import sd_proxy
 from dotenv import load_dotenv
 
+from operategpt.providers.base import T2VPrompt
+from operategpt.providers.text2video_proxy import t2v_request
+
 load_dotenv(verbose=True, override=True)
 OPEN_AI_PROXY_SERVER_URL = os.getenv("OPEN_AI_PROXY_SERVER_URL", "https://api.openai.com/v1/chat/completions")
 OPEN_AI_KEY = os.getenv("OPEN_AI_KEY")
@@ -29,6 +32,11 @@ To make the operational document appear more organized, please insert the follow
 ```
 {1}
 ```
+
+Please insert the following videos at the different appropriate locations in the document, not the same locations, you can use the format such as `<video width="640" height="360" controls> <source src="http://xxxxxx.mp4" type="video/mp4">video-name</video>`, if the video list is empty, please ignore.
+```
+{2}
+```
 """
 
 IMAGE_DESC_PROMPT = """Based on the content below, select 3 to 5 relevant events or content information and describe them along with their respective characteristics:
@@ -42,6 +50,19 @@ You should response me follow next format, only one json data with some key-valu
 <ImagePrompt> {{"picture-name-1": "<summary content1>", "picture-name-2": "<summary content2>", "picture-name-3": "<summary content3>"}} </ImagePrompt>
 
 """
+
+VIDEO_DESC_PROMPT = """Based on the content below, summarize a core thing, as well as related functions and processes
+```
+{0}
+```
+
+Please provide an answer similar to the one below, but without any additional information, details start with <VideoPrompt>, end with </VideoPrompt>, no content beyound tag <VideoPrompt> and </VideoPrompt>. 
+You should response me follow next format, only one json data with some key-value data:
+
+<VideoPrompt> {{"video-name-1": "<summary content1>"}} </VideoPrompt>
+
+"""
+
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -157,6 +178,56 @@ def generate_images(converted_dict: dict) -> str:
     return str(image_dict)
 
 
+def parse_video_info(summary_data: str) -> dict:
+    videos_prompt_info = VIDEO_DESC_PROMPT.format(summary_data)
+    logger.info(
+        f"\n====================================videos_prompt_info=\n{videos_prompt_info}"
+    )
+
+    video_info = query_from_openai_proxy(videos_prompt_info)
+    logger.info(f"\n====================================image_info=\n {video_info}")
+
+    # Extract the content within the ImagePrompt tag
+    start_index = video_info.index("<VideoPrompt>") + 13
+    end_index = video_info.index("</VideoPrompt>")
+    content = video_info[start_index:end_index]
+    logger.info(
+        f"\n=====================================extract json prompt from video_info=\n{content}"
+    )
+
+    data_dict = json.loads(content)
+    converted_dict = {key.replace(" ", "_"): value for key, value in data_dict.items()}
+    return converted_dict
+
+
+def generate_videos(converted_dict: dict) -> str:
+    video_dict = []
+    try:
+        if len(converted_dict) == 0:
+            return "No Videos"
+        index = 0
+        logger.info(
+            f"parse_video_info: start generate videos, total: {len(converted_dict)}, current: {index}"
+        )
+        # start request text2video:
+        for video_name, video_prompt in converted_dict.items():
+            index += 1
+            t2v_prompt = T2VPrompt()
+            t2v_prompt.prompt = video_prompt
+            download_url = t2v_request(t2v_prompt)
+            if download_url is None:
+                continue
+
+            video_dict.append({"video_name": video_name, "url": download_url})
+            logger.info(
+                f"parse_video_info: generating videos, total: {len(converted_dict)}, completed: {index}, video_dict={str(video_dict)}"
+            )
+        return str(video_dict)
+    except Exception as e:
+        logger.info(f"generate_videos exception: {str(e)}")
+        return str(video_dict)
+
+
 def write_markdown_content(content, filename, filepath):
     if not os.path.exists(filepath):
         os.makedirs(filepath)
@@ -201,7 +272,14 @@ async def startup(idea: str):
     image_data = generate_images(image_prompt_dict)
     logger.info(f"\ncompleted generate_images=\n{image_data}")
 
-    prompt_req = OPERATE_PROMPT.format(summary_data, image_data)
+    # if exist Text2Video model, add video info
+    video_prompt_dict = parse_video_info(summary_data)
+    logger.info(f"\ncompleted parse_video_info=\n{video_prompt_dict}")
+
+    video_data = generate_videos(video_prompt_dict)
+    logger.info(f"\ncompleted generate_videos=\n{video_data}")
+
+    prompt_req = OPERATE_PROMPT.format(summary_data, image_data, video_data)
     logger.info(f"\ngenerated markdown content prompt request=\n{prompt_req}")
 
     result = query_from_openai_proxy(prompt_req)

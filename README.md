@@ -53,12 +53,12 @@ git lfs install
 git clone https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2
 
 # [Options]
-# Size: 94 GB, stablediffusion-proxy service is recommended, https://github.com/xuyuan23/stablediffusion-proxy
+# Size: 94 GB, supported run in cpu model(RAM>14 GB). stablediffusion-proxy service is recommended, https://github.com/xuyuan23/stablediffusion-proxy
 git lfs install 
 git clone https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0
 
 # [Options]
-# Size: 10 GB, Text2Video service is recommended. https://github.com/xuyuan23/Text2Video
+# Size: 16 GB, supported run in cpu model(RAM>16 GB). Text2Video service is recommended. https://github.com/xuyuan23/Text2Video
 git lfs install
 git clone https://huggingface.co/cerspense/zeroscope_v2_576w
 ```
@@ -89,6 +89,9 @@ OPEN_AI_KEY=sk-xxx
 
 # If you don't deploy stable diffusion service, no image will be generated.
 SD_PROXY_URL=127.0.0.1:7860
+
+# If you don't deploy Text2Video service, no videos will be generated.
+T2V_PROXY_URL=127.0.0.1:7861
 ```
 - More Details see file `.env.template`
 
