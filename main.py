@@ -17,7 +17,9 @@ from operategpt.providers.base import T2VPrompt
 from operategpt.providers.text2video_proxy import t2v_request
 
 load_dotenv(verbose=True, override=True)
-OPEN_AI_PROXY_SERVER_URL = os.getenv("OPEN_AI_PROXY_SERVER_URL", "https://api.openai.com/v1/chat/completions")
+OPEN_AI_PROXY_SERVER_URL = os.getenv(
+    "OPEN_AI_PROXY_SERVER_URL", "https://api.openai.com/v1/chat/completions"
+)
 OPEN_AI_KEY = os.getenv("OPEN_AI_KEY")
 VECTOR_STORE_TYPE = os.getenv("VECTOR_STORE_TYPE", "Chroma")
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "all-MiniLM-L6-v2")
@@ -28,7 +30,7 @@ content:
 {0}
 ```
 
-To make the operational document appear more organized, please insert the following images at the different appropriate locations in the document, not the same locations, you can use the format such as `<img src='http://xxxxxxx.png'/>`
+To make the operational document appear more organized, please insert the following images at the different appropriate locations in the document, not the same locations, you can use the format such as `<img src='http://xxxxxxx.png'/>`, if the image list is empty, please ignore.
 ```
 {1}
 ```
@@ -185,7 +187,7 @@ def parse_video_info(summary_data: str) -> dict:
     )
 
     video_info = query_from_openai_proxy(videos_prompt_info)
-    logger.info(f"\n====================================image_info=\n {video_info}")
+    logger.info(f"\n====================================video_info=\n {video_info}")
 
     # Extract the content within the ImagePrompt tag
     start_index = video_info.index("<VideoPrompt>") + 13
