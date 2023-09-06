@@ -70,7 +70,7 @@ def create_task(user_id: int, prompt: str):
     try:
         task_uuid = generate_uuid()
         session = Session()
-        task = Task(user_id=user_id, prompt=prompt, status="init", uuid=task_uuid)
+        task = Task(user_id=user_id, prompt=prompt, status="init", uuid=task_uuid, gmt_create=datetime.now(), gmt_modified=datetime.now())
         session.add(task)
         session.commit()
         session.close()
