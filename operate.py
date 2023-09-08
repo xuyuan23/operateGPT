@@ -108,7 +108,6 @@ def query_from_openai_proxy(prompt):
         "model": "gpt-3.5-turbo",
         "messages": history,
         "temperature": 0.7,
-        "max_tokens": 4000-len(prompt),
         "stream": False,
     }
 
@@ -198,7 +197,7 @@ def generate_images(converted_dict: dict) -> str:
             # TODO download to local folder! (such as /var/www/html/xxx)
             # http://47.99.143.40/1693913288/DB_GPT_Features.png  TO  {BASEURL}/1693913288/DB_GPT_Features.png
             # If not deployed PROD, please delete the next line of code.
-            # download_url = download_file(download_url)
+            download_url = download_file(download_url)
 
             image_dict.append({"image_name": image_name, "url": download_url})
             logger.info(
@@ -329,8 +328,8 @@ def startup(idea: str):
     logger.info(f"\ngenerated markdown content: \n{result}")
 
     # If deployed in PROD, use write_markdown_content_v2 instead.
-    download_url = write_markdown_content(
-        result, operation_name, GENERATED_OPERATE_DATA
+    download_url = write_markdown_content_v2(
+        result, operation_name, GENERATED_OPERATE_DATA_DEFAULT_DIR
     )
 
     logger.info(f"\nwrite file completed, download_url={download_url}")
