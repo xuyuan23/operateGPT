@@ -100,7 +100,7 @@ def query_from_openai_proxy(prompt):
     history = [
         {
             "role": "system",
-            "content": "You are ChatGPT, a large language model trained by OpenAI, Current time: 2023/8/8 20:24:10",
+            "content": "You are OperateGPT, a large language model.",
         },
         {"role": "user", "content": prompt},
     ]
