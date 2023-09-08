@@ -105,7 +105,7 @@ def query_from_openai_proxy(prompt):
         "model": "gpt-3.5-turbo",
         "messages": history,
         "temperature": 0.7,
-        "max_tokens": 2500,
+        "max_tokens": 4000-len(prompt),
         "stream": False,
     }
 
