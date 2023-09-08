@@ -48,7 +48,7 @@ Please insert the following videos at the different appropriate locations in the
 ```
 """
 
-IMAGE_DESC_PROMPT = """Based on the content below, select 3 to 5 relevant events or content information and describe them along with their respective characteristics:
+IMAGE_DESC_PROMPT = """Based on the content below, select 3 to 5 different relevant events or content information and describe them along with their respective characteristics with length of fewer than 100 words.:
 ```
 {0}
 ```
@@ -79,13 +79,16 @@ def search_relative_data_from_ds(query):
     :param query:
     :return:
     """
-    search_results = search(query, num_results=1, lang="en")
-    first_result_url = next(search_results)
-    logger.info(f"first_result_url={first_result_url}")
-    response = requests.get(first_result_url)
-    soup = BeautifulSoup(response.text, "html.parser")
-    ans = soup.get_text().replace("\n", "").replace("\r", "").replace("\t", "")
-    return ans
+    search_results = search(query, num_results=5, lang="en")
+    relevant_data = ""
+    for result in search_results:
+        logger.info(f"link:{result}")
+        resp = requests.get(result)
+        soup = BeautifulSoup(resp.text, "html.parser")
+        ans = soup.get_text().replace("\n", "").replace("\r", "").replace("\t", "")
+        logger.info(f"website data:{ans}")
+        relevant_data += ans
+    return relevant_data
 
 
 def query_from_openai_proxy(prompt):
