@@ -166,6 +166,9 @@ def parse_image_info(summary_data: str) -> dict:
 
 
 def download_file(download_url: str) -> str:
+    """
+        Download image file, store in current dir.
+    """
     try:
         parts = download_url.rsplit('/', 2)
         origin_file = f'{parts[-2]}/{parts[-1]}'
@@ -180,7 +183,29 @@ def download_file(download_url: str) -> str:
             return f"{DOWNLOAD_FOLDER}/{origin_file}"
         else:
             print(f"download file error, HTTP state code: {response.status_code}")
-            return ""
+            return download_url
+    except Exception as e:
+        print(f"download file error: {str(e)}")
+
+
+def download_video_file(download_url: str) -> str:
+    """
+        Download video file, store in current dir.
+    """
+    try:
+        parts = download_url.rsplit('/', 1)
+        origin_file = parts[-1]
+        filename = f"{GENERATED_OPERATE_DATA_DEFAULT_DIR}/{origin_file}"
+        response = requests.get(download_url)
+
+        if response.status_code == 200:
+            with open(filename, "wb") as file:
+                file.write(response.content)
+            print(f"download file success, filename={filename}")
+            return f"{DOWNLOAD_FOLDER}/{origin_file}"
+        else:
+            print(f"download file error, HTTP state code: {response.status_code}")
+            return download_url
     except Exception as e:
         print(f"download file error: {str(e)}")
 
@@ -198,8 +223,6 @@ def generate_images(converted_dict: dict) -> str:
         for image_name, image_prompt in converted_dict.items():
             index += 1
             download_url = sd_proxy.sd_request(prompt=image_prompt, image_name=image_name)
-            # TODO download to local folder! (such as /var/www/html/xxx)
-            # http://47.99.143.40/1693913288/DB_GPT_Features.png  TO  {BASEURL}/1693913288/DB_GPT_Features.png
             # If not deployed PROD, please delete the next line of code.
             download_url = download_file(download_url)
 
@@ -250,6 +273,8 @@ def generate_videos(converted_dict: dict) -> str:
             t2v_prompt = T2VPrompt()
             t2v_prompt.prompt = video_prompt
             download_url = t2v_request(t2v_prompt)
+            # If not deployed PROD, please delete the next line of code.
+            download_url = download_video_file(download_url)
             if download_url is None:
                 continue
 
