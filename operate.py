@@ -31,7 +31,7 @@ DOWNLOAD_FOLDER = os.getenv("DOWNLOAD_FOLDER", GENERATED_OPERATE_DATA)
 GENERATED_OPERATE_DATA_DEFAULT_DIR = os.getenv("GENERATED_OPERATE_DATA_DEFAULT_DIR", "/var/www/html/experience")
 
 
-OPERATE_PROMPT = """You are an operation expert, now please write a detailed operation article according to the following content, the format is beautiful and the content is attractive. Remarks: Be sure to author and analyze according to the content provided, the author is OperateGPT, and may include charts as appropriate, generate in Markdown format.
+OPERATE_PROMPT = """You are an operation expert, now please write a detailed operation article according to the following content, the format is beautiful and the content is attractive. Remarks: Be sure to author and analyze according to the content provided, the author is OperateGPT, and may include charts as appropriate, generate in Markdown format, the author operateGPT should be linked to 'https://github.com/xuyuan23/operateGPT'.
 content: 
 ```
 {0}
