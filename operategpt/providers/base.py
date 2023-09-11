@@ -3,9 +3,9 @@ from pydantic import BaseModel
 
 class T2VPrompt(BaseModel):
     prompt: str = None
-    num_inference_steps: int = 40
+    num_inference_steps: int = 25
     height: int = 320
-    width: int = 576
+    width: int = 480
     num_frames: int = 24
 
 

@@ -82,13 +82,17 @@ def search_relative_data_from_ds(query):
     search_results = search(query, num_results=5, lang="en")
     relevant_data = ""
     for result in search_results:
-        logger.info(f"link:{result}")
-        resp = requests.get(result)
-        soup = BeautifulSoup(resp.text, "html.parser")
-        ans = soup.get_text().replace("\n", "").replace("\r", "").replace("\t", "")
-        logger.info(f"website data:{ans}")
-        relevant_data += ans
-    return relevant_data
+        try:
+            logger.info(f"link:{result}")
+            resp = requests.get(result, timeout=10)
+            resp.raise_for_status()
+            soup = BeautifulSoup(resp.text, "html.parser")
+            ans = soup.get_text().replace("\n", "").replace("\r", "").replace("\t", "")
+            logger.info(f"website data:{ans}")
+            relevant_data += ans
+        except Exception as ex:
+            logger.info(f"get link failed:{str(ex)}")
+    return relevant_data if relevant_data != "" else query
 
 
 def query_from_openai_proxy(prompt):
