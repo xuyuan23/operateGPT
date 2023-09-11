@@ -1,8 +1,33 @@
 # OperateGPT: Revolutionize Your Operations with One-Line Requests
 <div align="center">
+  <p>
+    <a href="https://github.com/xuyuan23/operateGPT">
+        <img alt="stars" src="https://img.shields.io/github/stars/xuyuan23/operategpt?style=social" />
+    </a>
+    <a href="https://github.com/xuyuan23/operateGPT">
+        <img alt="forks" src="https://img.shields.io/github/forks/xuyuan23/operategpt?style=social" />
+    </a>
+    <a href="https://opensource.org/licenses/MIT">
+      <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
+    </a>
+    <a href="https://opensource.org/licenses/MIT">
+      <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
+    </a>
+     <a href="https://github.com/xuyuan23/operateGPT/releases">
+      <img alt="Release Notes" src="https://img.shields.io/github/release/xuyuan23/operateGPT" />
+    </a>
+    <a href="https://github.com/xuyuan23/operateGPT/issues">
+      <img alt="Open Issues" src="https://img.shields.io/github/issues-raw/xuyuan23/operateGPT" />
+    </a>
+    <a href="https://codespaces.new/xuyuan23/operateGPT">
+      <img alt="Open in GitHub Codespaces" src="https://github.com/codespaces/badge.svg" />
+    </a>
+  </p>
 
-[**简体中文**](docs/README_ZH.md) |[**Documents**](http://operategpt.cn/web/#/602177878/152973408)|
+[**简体中文**](docs/README_ZH.md) |[**Documents**](http://operategpt.cn/docs/)|[**Website**](http://dev.operategpt.cn/)|
 </div>
+
+<a href="http://dev.operategpt.cn">🚀🚀Experience Now!!</a>
 
 - Using large language models and multi-agent technology, a single request can automatically generate marketing copy, images, and videos, and with one click, can be sent to multiple platforms, achieving a rapid transformation in marketing operations.
 
