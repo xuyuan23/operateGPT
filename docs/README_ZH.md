@@ -29,7 +29,7 @@
 
 <a href="http://dev.operategpt.cn">🚀🚀立刻体验！！</a>
 
-[🔥🔥最新发布版本:V0.0.1](./docs/operategpt_release_doc.md)
+[🔥🔥最新发布版本:V0.0.1](./operategpt_release_doc_zh.md)
 
 - 利用大语言模型和多智能体技术，通过一行需求自动生成运营文案、图片和视频，一键发送多个平台实现快速运营的变革
 
