@@ -1,8 +1,35 @@
 # OperateGPT: 一句话需求即可完成运营的变革
 <div align="center">
+  <p>
+    <a href="https://github.com/xuyuan23/operateGPT">
+        <img alt="stars" src="https://img.shields.io/github/stars/xuyuan23/operategpt?style=social" />
+    </a>
+    <a href="https://github.com/xuyuan23/operateGPT">
+        <img alt="forks" src="https://img.shields.io/github/forks/xuyuan23/operategpt?style=social" />
+    </a>
+    <a href="https://opensource.org/licenses/MIT">
+      <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
+    </a>
+    <a href="https://opensource.org/licenses/MIT">
+      <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
+    </a>
+     <a href="https://github.com/xuyuan23/operateGPT/releases">
+      <img alt="Release Notes" src="https://img.shields.io/github/release/xuyuan23/operateGPT" />
+    </a>
+    <a href="https://github.com/xuyuan23/operateGPT/issues">
+      <img alt="Open Issues" src="https://img.shields.io/github/issues-raw/xuyuan23/operateGPT" />
+    </a>
+    <a href="https://codespaces.new/xuyuan23/operateGPT">
+      <img alt="Open in GitHub Codespaces" src="https://github.com/codespaces/badge.svg" />
+    </a>
+  </p>
 
-[**English**](../README.md) |[**文档**](http://operategpt.cn/web/#/602177878/152973408)|
+[**English**](../README.md) |[**文档**](http://operategpt.cn/web/#/602177878/152973408)|[**网站首页**](http://operategpt.cn/)
 </div>
+
+<a href="http://dev.operategpt.cn">🚀🚀立刻体验！！</a>
+
+[🔥🔥最新发布版本:V0.0.1](./operategpt_release_doc_zh.md)
 
 - 利用大语言模型和多智能体技术，通过一行需求自动生成运营文案、图片和视频，一键发送多个平台实现快速运营的变革
 
@@ -82,9 +109,6 @@ OPEN_AI_KEY=sk-xxx
 SD_PROXY_URL=127.0.0.1:7860
 ```
 
-## 内容展示
-- 下面的内容完全是由OperateGPT生成: http://operategpt.cn/web/#/602177878/0
-
-- 视频
+## Video Demo
 
 https://github.com/xuyuan23/operateGPT/assets/26043513/bd585d00-f793-443d-a395-532d0c038e97
