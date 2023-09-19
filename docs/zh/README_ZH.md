@@ -24,30 +24,18 @@
     </a>
   </p>
 
-[**English**](../README.md) |[**文档**](http://operategpt.cn/web/#/602177878/152973408)|[**网站首页**](http://operategpt.cn/)
+[**English**](../../README.md) |[**文档**](http://operategpt.cn/web/#/602177878/152973408)|[**网站首页**](http://operategpt.cn/)
 </div>
 
 <a href="http://dev.operategpt.cn">🚀🚀立刻体验！！</a>
 
-[🔥🔥最新发布版本:V0.0.1](./operategpt_release_doc_zh.md)
+[🔥🔥最新发布版本:V0.0.1](OperateGPT_ZH.md)
+
+[🔥🔥多模型管理](multi_models_manage_zh.md)
 
 - 利用大语言模型和多智能体技术，通过一行需求自动生成运营文案、图片和视频，一键发送多个平台实现快速运营的变革
 
-![OperateGPT Process](../assets/operateGPT_process.png)
-
-
-## 支持的运营平台
-
-| Operate Platform | Supported   | API           | Notes |
-|------------------|-------------|---------------|-------|
-| YouTube          | Coming soon | Coming soon   |       |
-| Twitter          | Coming soon | Coming soon   |       |
-| CSDN             | Coming soon | Coming soon   |       |
-| B站               | Coming soon | Coming soon   |       |
-| 知乎               | Coming soon | Coming soon   |       |
-| 微信               | Coming soon | Coming soon   |       |
-| 豆瓣               | Coming soon | Coming soon   |       |
-| 抖音               | Coming soon | Coming soon   |       |
+![OperateGPT Process](../../assets/operateGPT_process.png)
 
 ## 支持的大语言模型
 

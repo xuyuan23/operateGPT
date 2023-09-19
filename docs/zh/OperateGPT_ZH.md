@@ -16,7 +16,7 @@
 
 ## 架构
 
-![](../assets/operateGPT_arch_v2.png)
+![](../../assets/operateGPT_arch_v2.png)
 
 ## OperateGPT工作原理
 

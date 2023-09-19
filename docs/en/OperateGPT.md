@@ -16,7 +16,7 @@
 
 ## Architecture
 
-![](../assets/operateGPT_arch_v2.png)
+![](../../assets/operateGPT_arch_v2.png)
 
 ## How operateGPT works?
 
