@@ -51,21 +51,31 @@
 
 ## Supported LLMs
 
-| LLM             | Supported    | Model Type   | Notes |
-|-----------------|--------------|--------------|-------|
-| ChatGPT         | Yes          | Proxy        |       |
-| Bard            | Yes          | Proxy        |       |
-| Claude          | Coming soon  | Proxy        |       |
-| Vicuna-13b-v1.5 | Coming soon  | Local Model  |       |
-| ChatGLM2-6B     | Coming soon  | Local Model  |       |
-| Qwen-7b-Chat    | Coming soon  | Local Model  |       |
+| LLM             | Supported    | Model Type  | Notes    |
+|-----------------|--------------|-------------|----------|
+| ChatGPT         | ✅            | Proxy       | Default  |
+| Bard            | ✅            | Proxy       |          |
+| Vicuna-13b      | ✅            | Local Model |          |
+| Vicuna-13b-v1.5 | ✅            | Local Model |          |
+| Vicuna-7b       | ✅            | Local Model |          |
+| Vicuna-7b-v1.5  | ✅            | Local Model |          |
+| ChatGLM-6B      | ✅            | Local Model |          |
+| ChatGLM2-6B     | ✅            | Local Model |          |
+| baichuan-13b    | ✅            | Local Model |          |
+| baichuan2-13b   | ✅            | Local Model |          |
+| baichuan-7b     | ✅            | Local Model |          |
+| baichuan2-7b    | ✅            | Local Model |          |
+| Qwen-7b-Chat    | Coming soon  | Local Model |          |
 
 ## Supported Embedding Models
 
-| LLM                      | Supported    | Notes |
-|--------------------------|--------------|-------|
-| all-MiniLM-L6-v2         | Yes          |       |
-| text2vec-large-chinese   | Coming soon  |       |
+| LLM                    | Supported | Notes   |
+|------------------------|-----------|---------|
+| sentence-transformers  | ✅         | Default |
+| text2vec-large-chinese | ✅         |         |
+| m3e-large              | ✅         |         |
+| bge-large-en           | ✅         |         |
+| bge-large-zh           | ✅         |         |
 
 
 ## Installation
