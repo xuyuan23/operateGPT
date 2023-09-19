@@ -17,7 +17,9 @@ from operategpt.providers.base import T2VPrompt
 from operategpt.providers.text2video_proxy import t2v_request
 
 load_dotenv(verbose=True, override=True)
-OPEN_AI_PROXY_SERVER_URL = os.getenv("OPEN_AI_PROXY_SERVER_URL", "https://api.openai.com/v1/chat/completions")
+OPEN_AI_PROXY_SERVER_URL = os.getenv(
+    "OPEN_AI_PROXY_SERVER_URL", "https://api.openai.com/v1/chat/completions"
+)
 OPEN_AI_KEY = os.getenv("OPEN_AI_KEY")
 VECTOR_STORE_TYPE = os.getenv("VECTOR_STORE_TYPE", "Chroma")
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "all-MiniLM-L6-v2")

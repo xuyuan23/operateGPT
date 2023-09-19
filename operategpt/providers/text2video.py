@@ -17,7 +17,9 @@ ROOT_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fi
 DATA_PATH = os.path.join(ROOT_PATH, "data")
 MODEL_PATH = os.path.join(ROOT_PATH, "models")
 
-pipe = DiffusionPipeline.from_pretrained(os.path.join(MODEL_PATH, T2V_MODEL), torch_dtype=torch.float16)
+pipe = DiffusionPipeline.from_pretrained(
+    os.path.join(MODEL_PATH, T2V_MODEL), torch_dtype=torch.float16
+)
 pipe.scheduler = DPMSolverMultistepScheduler.from_config(pipe.scheduler.config)
 pipe.enable_model_cpu_offload()
 
@@ -32,7 +34,9 @@ class LLMPrompt(BaseModel):
 
 @app.post("/generate_video")
 def generate_video(lp: LLMPrompt):
-    video_frames = pipe(lp.prompt, lp.num_inference_steps, lp.height, lp.width, lp.num_frames).frames
+    video_frames = pipe(
+        lp.prompt, lp.num_inference_steps, lp.height, lp.width, lp.num_frames
+    ).frames
     timestamp = int(time.time())
     video_name_tmp = f"{T2V_MODEL}_{str(timestamp)}_tmp.mp4"
     video_path = export_to_video(video_frames, os.path.join(DATA_PATH, video_name_tmp))

@@ -12,8 +12,6 @@ class EmbeddingEngine:
     """EmbeddingEngine provide a chain process include(read->text_split->data_process->index_store) for knowledge document embedding into vector store.
     1.knowledge_embedding:knowledge document source into vector store.(Chroma, Milvus, Weaviate)
     2.similar_search: similarity search from vector_store
-    how to use reference:https://db-gpt.readthedocs.io/en/latest/modules/knowledge.html
-    how to integrate:https://db-gpt.readthedocs.io/en/latest/modules/knowledge/pdf/pdf_embedding.html
     """
 
     def __init__(
