@@ -26,10 +26,10 @@ pipe.enable_model_cpu_offload()
 
 class LLMPrompt(BaseModel):
     prompt: str = None
-    num_inference_steps: int = 40
+    num_inference_steps: int = 25
     height: int = 320
-    width: int = 576
-    num_frames: int = 24
+    width: int = 480
+    num_frames: int = 40
 
 
 @app.post("/generate_video")

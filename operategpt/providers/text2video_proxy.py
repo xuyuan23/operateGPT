@@ -15,8 +15,14 @@ T2V_GENERATE_VIDEO_API = "/generate_video"
 def t2v_request(t2v_prompt: T2VPrompt):
     url = T2V_PROXY_URL + T2V_GENERATE_VIDEO_API
     headers = {"Content-Type": "application/json"}
-
-    response = requests.post(url, headers=headers, data=json.dumps(t2v_prompt))
+    t2v_prompt_json = {
+        "prompt": t2v_prompt.prompt,
+        "num_inference_steps": 25,
+        "height": 320,
+        "width": 480,
+        "num_frames": 24,
+    }
+    response = requests.post(url, headers=headers, data=json.dumps(t2v_prompt_json))
     result = response.json()
 
     if result.get("success"):

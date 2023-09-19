@@ -1,30 +1,37 @@
-import asyncio
 import json
 import os
 import time
 
-import fire
 from googlesearch import search
 import requests
 from bs4 import BeautifulSoup
 
+from dotenv import load_dotenv
+
 from operategpt.embeddings import EmbeddingEngine, KnowledgeType
 from operategpt.logs import logger
 from operategpt.providers import sd_proxy
-from dotenv import load_dotenv
-
 from operategpt.providers.base import T2VPrompt
 from operategpt.providers.text2video_proxy import t2v_request
 
 load_dotenv(verbose=True, override=True)
+
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_DATA_PATH = os.path.join(ROOT_DIR, "data")
+KNOWLEDGE_UPLOAD_ROOT_PATH = os.path.join(PROJECT_DATA_PATH, "vectordb")
+GENERATED_OPERATE_DATA = os.path.join(PROJECT_DATA_PATH, "operation_data")
+
 OPEN_AI_PROXY_SERVER_URL = os.getenv(
     "OPEN_AI_PROXY_SERVER_URL", "https://api.openai.com/v1/chat/completions"
 )
 OPEN_AI_KEY = os.getenv("OPEN_AI_KEY")
 VECTOR_STORE_TYPE = os.getenv("VECTOR_STORE_TYPE", "Chroma")
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "all-MiniLM-L6-v2")
+DOWNLOAD_FOLDER = os.getenv("DOWNLOAD_FOLDER", GENERATED_OPERATE_DATA)
+GENERATED_OPERATE_DATA_DEFAULT_DIR = os.getenv("GENERATED_OPERATE_DATA_DEFAULT_DIR", "/var/www/html/experience")
 
-OPERATE_PROMPT = """You are an operation expert, now please write a detailed operation article according to the following content, the format is beautiful and the content is attractive. Remarks: Be sure to author and analyze according to the content provided, the author is OperateGPT, and may include charts as appropriate, generate in Markdown format.
+
+OPERATE_PROMPT = """You are an operation expert, now please write a detailed operation article according to the following content, the format is beautiful and the content is attractive. Remarks: Be sure to author and analyze according to the content provided, the author is OperateGPT, and may include charts as appropriate, generate in Markdown format, the author operateGPT should be linked to 'https://github.com/xuyuan23/operateGPT'.
 content: 
 ```
 {0}
@@ -41,7 +48,7 @@ Please insert the following videos at the different appropriate locations in the
 ```
 """
 
-IMAGE_DESC_PROMPT = """Based on the content below, select 3 to 5 relevant events or content information and describe them along with their respective characteristics:
+IMAGE_DESC_PROMPT = """Based on the content below, select 3 to 5 different relevant events or content information and describe them along with their respective characteristics with length of fewer than 100 words.:
 ```
 {0}
 ```
@@ -66,28 +73,26 @@ You should response me follow next format, only one json data with some key-valu
 """
 
 
-ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-
-PROJECT_DATA_PATH = os.path.join(ROOT_DIR, "data")
-
-KNOWLEDGE_UPLOAD_ROOT_PATH = os.path.join(PROJECT_DATA_PATH, "vectordb")
-
-GENERATED_OPERATE_DATA = os.path.join(PROJECT_DATA_PATH, "operation_data")
-
-
 def search_relative_data_from_ds(query):
     """
     search the content and extract the text from html.
     :param query:
     :return:
     """
-    search_results = search(query, num_results=1, lang="en")
-    first_result_url = next(search_results)
-    logger.info(f"first_result_url={first_result_url}")
-    response = requests.get(first_result_url)
-    soup = BeautifulSoup(response.text, "html.parser")
-    ans = soup.get_text().replace("\n", "").replace("\r", "").replace("\t", "")
-    return ans
+    search_results = search(query, num_results=5, lang="en")
+    relevant_data = ""
+    for result in search_results:
+        try:
+            logger.info(f"link:{result}")
+            resp = requests.get(result, timeout=10)
+            resp.raise_for_status()
+            soup = BeautifulSoup(resp.text, "html.parser")
+            ans = soup.get_text().replace("\n", "").replace("\r", "").replace("\t", "")
+            logger.info(f"website data:{ans}")
+            relevant_data += ans
+        except Exception as ex:
+            logger.info(f"get link failed:{str(ex)}")
+    return relevant_data if relevant_data != "" else query
 
 
 def query_from_openai_proxy(prompt):
@@ -99,7 +104,7 @@ def query_from_openai_proxy(prompt):
     history = [
         {
             "role": "system",
-            "content": "You are ChatGPT, a large language model trained by OpenAI, Current time: 2023/8/8 20:24:10",
+            "content": "You are OperateGPT, a large language model.",
         },
         {"role": "user", "content": prompt},
     ]
@@ -107,7 +112,6 @@ def query_from_openai_proxy(prompt):
         "model": "gpt-3.5-turbo",
         "messages": history,
         "temperature": 0.7,
-        "max_tokens": 2500,
         "stream": False,
     }
 
@@ -161,23 +165,75 @@ def parse_image_info(summary_data: str) -> dict:
     return converted_dict
 
 
+def download_file(download_url: str) -> str:
+    """
+        Download image file, store in current dir.
+    """
+    try:
+        parts = download_url.rsplit('/', 2)
+        origin_file = f'{parts[-2]}/{parts[-1]}'
+        filename = f"{GENERATED_OPERATE_DATA_DEFAULT_DIR}/{origin_file}"
+        os.makedirs(f"{GENERATED_OPERATE_DATA_DEFAULT_DIR}/{parts[-2]}", exist_ok=True)
+        response = requests.get(download_url)
+
+        if response.status_code == 200:
+            with open(filename, "wb") as file:
+                file.write(response.content)
+            print(f"download file success, filename={filename}")
+            return f"{DOWNLOAD_FOLDER}/{origin_file}"
+        else:
+            print(f"download file error, HTTP state code: {response.status_code}")
+            return download_url
+    except Exception as e:
+        print(f"download file error: {str(e)}")
+
+
+def download_video_file(download_url: str) -> str:
+    """
+        Download video file, store in current dir.
+    """
+    try:
+        parts = download_url.rsplit('/', 1)
+        origin_file = parts[-1]
+        filename = f"{GENERATED_OPERATE_DATA_DEFAULT_DIR}/{origin_file}"
+        response = requests.get(download_url)
+
+        if response.status_code == 200:
+            with open(filename, "wb") as file:
+                file.write(response.content)
+            print(f"download file success, filename={filename}")
+            return f"{DOWNLOAD_FOLDER}/{origin_file}"
+        else:
+            print(f"download file error, HTTP state code: {response.status_code}")
+            return download_url
+    except Exception as e:
+        print(f"download file error: {str(e)}")
+
+
 def generate_images(converted_dict: dict) -> str:
-    if len(converted_dict) == 0:
-        return "No images"
-    index = 0
-    logger.info(
-        f"parse_image_info: start generate pictures, total: {len(converted_dict)}, current: {index}"
-    )
     image_dict = []
-    # start request stable diffusion:
-    for image_name, image_prompt in converted_dict.items():
-        index += 1
-        download_url = sd_proxy.sd_request(prompt=image_prompt, image_name=image_name)
-        image_dict.append({"image_name": image_name, "url": download_url})
+    try :
+        if len(converted_dict) == 0:
+            return "No images"
+        index = 0
         logger.info(
-            f"parse_image_info: generating pictures, total: {len(converted_dict)}, completed: {index}, image_dict={str(image_dict)}"
+            f"parse_image_info: start generate pictures, total: {len(converted_dict)}, current: {index}"
         )
-    return str(image_dict)
+        # start request stable diffusion:
+        for image_name, image_prompt in converted_dict.items():
+            index += 1
+            download_url = sd_proxy.sd_request(prompt=image_prompt, image_name=image_name)
+            # If not deployed PROD, please delete the next line of code.
+            download_url = download_file(download_url)
+
+            image_dict.append({"image_name": image_name, "url": download_url})
+            logger.info(
+                f"parse_image_info: generating pictures, total: {len(converted_dict)}, completed: {index}, image_dict={str(image_dict)}"
+            )
+        return str(image_dict)
+    except Exception as e:
+        logger.info(f"generate_images exception: {str(e)}")
+        return str(image_dict)
 
 
 def parse_video_info(summary_data: str) -> dict:
@@ -217,6 +273,8 @@ def generate_videos(converted_dict: dict) -> str:
             t2v_prompt = T2VPrompt()
             t2v_prompt.prompt = video_prompt
             download_url = t2v_request(t2v_prompt)
+            # If not deployed PROD, please delete the next line of code.
+            download_url = download_video_file(download_url)
             if download_url is None:
                 continue
 
@@ -241,7 +299,18 @@ def write_markdown_content(content, filename, filepath):
     return full_path
 
 
-async def startup(idea: str):
+def write_markdown_content_v2(content, filename, filepath):
+    if not os.path.exists(filepath):
+        os.makedirs(filepath)
+
+    full_path = filepath + "/" + filename + ".md"
+
+    with open(full_path, "w") as file:
+        file.write(content)
+    return f"{DOWNLOAD_FOLDER}/{filename}.md"
+
+
+def startup(idea: str):
     """
     split tasks from LLM (search from #param1 and get data, embedding and do #param2 actions, send message)
 
@@ -287,15 +356,15 @@ async def startup(idea: str):
     result = query_from_openai_proxy(prompt_req)
     logger.info(f"\ngenerated markdown content: \n{result}")
 
-    generate_md_file = write_markdown_content(
-        result, operation_name, GENERATED_OPERATE_DATA
+    # If deployed in PROD, use write_markdown_content_v2 instead.
+    download_url = write_markdown_content_v2(
+        result, operation_name, GENERATED_OPERATE_DATA_DEFAULT_DIR
     )
-    logger.info(f"\nwrite file completed, path={generate_md_file}")
+
+    logger.info(f"\nwrite file completed, download_url={download_url}")
+    return download_url
 
 
-def main(idea: str):
-    asyncio.run(startup(idea))
-
-
-if __name__ == "__main__":
-    fire.Fire(main)
+def generate_md_file(idea) -> str:
+    download_url = startup(idea)
+    return download_url
