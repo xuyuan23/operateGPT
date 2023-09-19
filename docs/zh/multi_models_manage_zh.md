@@ -30,7 +30,7 @@
 
 ### 2.3 多模型管理架构
 
-<img src="../assets/multi_llms_manage.png" alt="SVG Image"/>
+<img src="../../assets/multi_llms_manage.png" alt="多模型管理"/>
 
 
 ## 三、多模型管理API

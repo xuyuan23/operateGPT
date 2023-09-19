@@ -30,7 +30,7 @@ Deploying private inference services can be costly, often requiring dozens of gi
 
 ### 2.3 Multi-model management architecture
 
-<img src="../assets/multi_llms_manage.png" alt="SVG Image"/>
+<img src="../../assets/multi_llms_manage.png" alt="Multi-Model-Management"/>
 
 
 ## 3. Multi-model management API
