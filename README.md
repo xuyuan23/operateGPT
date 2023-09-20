@@ -24,14 +24,14 @@
     </a>
   </p>
 
-[**简体中文**](../zh/README_ZH.md) |[**Documents**](http://operategpt.cn/docs/)|[**WebSite**](http://operategpt.cn/)
+[**简体中文**](docs/zh/README_ZH.md) |[**Documents**](http://operategpt.cn/docs/)|[**WebSite**](http://operategpt.cn/)
 </div>
 
 <a href="http://dev.operategpt.cn">🚀🚀Experience Now!!</a>
 
-[🔥🔥Latest Release Version:V0.0.1](../en/OperateGPT.md)
+[🔥🔥Latest Release Version:V0.0.1](docs/en/OperateGPT.md)
 
-[🔥🔥Multi-Models Management](../en/multi_models_manage.md)
+[🔥🔥Multi-Models Management](docs/en/multi_models_manage.md)
 
 
 Using large language models and multi-agent technology, a single request can automatically generate marketing copy, images, and videos, and with one click, can be sent to multiple platforms, achieving a rapid transformation in marketing operations.

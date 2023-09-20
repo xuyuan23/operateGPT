@@ -1,5 +1,7 @@
 # Multi-model management
 
+![OperateGPT](../../assets/operategpt_logo.png)
+
 ## 1. Why do we need multi-model management?
 In the era of flourishing LLMs (Large Language Models), a large number of models have emerged. These models include not only large language models, but also various image generation models, video generation models, and even multimodal models. In a project, it is unlikely to have just one type of model, let alone only one model. It is more likely to have complex combinations such as x LLM_A models, y LLM_B models, and z LLM_C models. In real-world business scenarios, there will be a multitude of problems to be solved.
 - How to implement multiple model scheduling?
