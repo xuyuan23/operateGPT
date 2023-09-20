@@ -14,6 +14,9 @@ from operate import generate_md_file
 from operategpt.api.Result import Result
 
 from dotenv import load_dotenv
+
+from operategpt.prompt.lang import Language
+
 load_dotenv(verbose=True, override=True)
 
 DB_USER = os.getenv("DB_USER", "root")
@@ -55,6 +58,7 @@ class Task(Base):
     gmt_modified = Column(TIMESTAMP, server_default="CURRENT_TIMESTAMP")
     result = Column(String(65535))
     uuid = Column(String(36))
+    lang = Column(String(36))
 
 
 class User(Base):
@@ -66,11 +70,13 @@ class User(Base):
 
 
 @router.post("/operate/task/create")
-def create_task(user_id: int, prompt: str):
+def create_task(user_id: int, prompt: str, lang: str = "en"):
     try:
+        if lang not in Language.get_all_langs():
+            return {"success": False, "msg": f"create task failed: lang {lang} is not supported!"}
         task_uuid = generate_uuid()
         session = Session()
-        task = Task(user_id=user_id, prompt=prompt, status="init", uuid=task_uuid, gmt_create=datetime.now(), gmt_modified=datetime.now())
+        task = Task(user_id=user_id, prompt=prompt, status="init", uuid=task_uuid, gmt_create=datetime.now(), gmt_modified=datetime.now(), lang=lang)
         session.add(task)
         session.commit()
         session.close()
@@ -92,6 +98,7 @@ def list_tasks(task_uuid: str):
         "status": task.status,
         "gmt_create": str(task.gmt_create),
         "gmt_modified": str(task.gmt_modified),
+        "lang": str(task.lang),
         "result": task.result,
         "queue_count": init_task_count
     }
@@ -112,6 +119,7 @@ def list_tasks(user_id: int):
             "status": task.status,
             "gmt_create": str(task.gmt_create),
             "gmt_modified": str(task.gmt_modified),
+            "lang": str(task.lang),
             "result": task.result,
         }
         task_list.append(task_dict)
@@ -152,8 +160,8 @@ def process_tasks():
 
 
 def execute_task(task):
-    print(f"execute task(id={task.id}), prompt={task.prompt}")
-    return generate_md_file(task.prompt)
+    print(f"execute task(id={task.id}), prompt={task.prompt}, lang={task.lang}")
+    return generate_md_file(task.prompt, task.lang)
 
 
 def start_task_processing():

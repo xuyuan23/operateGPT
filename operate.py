@@ -10,6 +10,8 @@ from dotenv import load_dotenv
 
 from operategpt.embeddings import EmbeddingEngine, KnowledgeType
 from operategpt.logs import logger
+from operategpt.prompt.lang import Language
+from operategpt.prompt.operate_prompt import OperatePromptManager
 from operategpt.providers import sd_proxy
 from operategpt.providers.base import T2VPrompt
 from operategpt.providers.text2video_proxy import t2v_request
@@ -29,48 +31,8 @@ VECTOR_STORE_TYPE = os.getenv("VECTOR_STORE_TYPE", "Chroma")
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "all-MiniLM-L6-v2")
 DOWNLOAD_FOLDER = os.getenv("DOWNLOAD_FOLDER", GENERATED_OPERATE_DATA)
 GENERATED_OPERATE_DATA_DEFAULT_DIR = os.getenv("GENERATED_OPERATE_DATA_DEFAULT_DIR", "/var/www/html/experience")
-
-
-OPERATE_PROMPT = """You are an operation expert, now please write a detailed operation article according to the following content, the format is beautiful and the content is attractive. Remarks: Be sure to author and analyze according to the content provided, the author is OperateGPT, and may include charts as appropriate, generate in Markdown format, the author operateGPT should be linked to 'https://github.com/xuyuan23/operateGPT'.
-content: 
-```
-{0}
-```
-
-To make the operational document appear more organized, please insert the following images at the different appropriate locations in the document, not the same locations, you can use the format such as `<img src='http://xxxxxxx.png'/>`, if the image list is empty, please ignore.
-```
-{1}
-```
-
-Please insert the following videos at the different appropriate locations in the document, not the same locations, you can use the format such as `<video width="640" height="360" controls> <source src="http://xxxxxx.mp4" type="video/mp4">video-name</video>`, if the video list is empty, please ignore.
-```
-{2}
-```
-"""
-
-IMAGE_DESC_PROMPT = """Based on the content below, select 3 to 5 different relevant events or content information and describe them along with their respective characteristics with length of fewer than 100 words.:
-```
-{0}
-```
-
-Please provide an answer similar to the one below, but without any additional information, details start with <ImagePrompt>, end with </ImagePrompt>, no content beyound tag <ImagePrompt> and </ImagePrompt>. 
-You should response me follow next format, only one json data with some key-value data:
-
-<ImagePrompt> {{"picture-name-1": "<summary content1>", "picture-name-2": "<summary content2>", "picture-name-3": "<summary content3>"}} </ImagePrompt>
-
-"""
-
-VIDEO_DESC_PROMPT = """Based on the content below, summarize a core thing, as well as related functions and processes
-```
-{0}
-```
-
-Please provide an answer similar to the one below, but without any additional information, details start with <VideoPrompt>, end with </VideoPrompt>, no content beyound tag <VideoPrompt> and </VideoPrompt>. 
-You should response me follow next format, only one json data with some key-value data:
-
-<VideoPrompt> {{"video-name-1": "<summary content1>"}} </VideoPrompt>
-
-"""
+LANGUAGE = os.getenv("LANGUAGE", "en")
+SERVER_MODE = os.getenv("SERVER_MODE", "local")
 
 
 def search_relative_data_from_ds(query):
@@ -143,8 +105,8 @@ def embedding_knowledge(content: str, vector_store_name: str):
     return client
 
 
-def parse_image_info(summary_data: str) -> dict:
-    images_prompt_info = IMAGE_DESC_PROMPT.format(summary_data)
+def parse_image_info(summary_data: str, lang: str) -> dict:
+    images_prompt_info = OperatePromptManager.get_instance().get_prompt(lang).image_desc_prompt.format(summary_data)
     logger.info(
         f"\n====================================images_prompt_info=\n{images_prompt_info}"
     )
@@ -211,8 +173,13 @@ def download_video_file(download_url: str) -> str:
 
 
 def generate_images(converted_dict: dict) -> str:
+    """
+    Generate images by Image models, may be proxy model.
+    :param converted_dict:
+    :return:
+    """
     image_dict = []
-    try :
+    try:
         if len(converted_dict) == 0:
             return "No images"
         index = 0
@@ -223,8 +190,9 @@ def generate_images(converted_dict: dict) -> str:
         for image_name, image_prompt in converted_dict.items():
             index += 1
             download_url = sd_proxy.sd_request(prompt=image_prompt, image_name=image_name)
-            # If not deployed PROD, please delete the next line of code.
-            download_url = download_file(download_url)
+
+            if SERVER_MODE == 'online':
+                download_url = download_file(download_url)
 
             image_dict.append({"image_name": image_name, "url": download_url})
             logger.info(
@@ -236,8 +204,8 @@ def generate_images(converted_dict: dict) -> str:
         return str(image_dict)
 
 
-def parse_video_info(summary_data: str) -> dict:
-    videos_prompt_info = VIDEO_DESC_PROMPT.format(summary_data)
+def parse_video_info(summary_data: str, lang: str) -> dict:
+    videos_prompt_info = OperatePromptManager.get_instance().get_prompt(lang).video_desc_prompt.format(summary_data)
     logger.info(
         f"\n====================================videos_prompt_info=\n{videos_prompt_info}"
     )
@@ -273,8 +241,8 @@ def generate_videos(converted_dict: dict) -> str:
             t2v_prompt = T2VPrompt()
             t2v_prompt.prompt = video_prompt
             download_url = t2v_request(t2v_prompt)
-            # If not deployed PROD, please delete the next line of code.
-            download_url = download_video_file(download_url)
+            if SERVER_MODE == 'online':
+                download_url = download_video_file(download_url)
             if download_url is None:
                 continue
 
@@ -296,21 +264,10 @@ def write_markdown_content(content, filename, filepath):
 
     with open(full_path, "w") as file:
         file.write(content)
-    return full_path
+    return full_path if SERVER_MODE == 'local' else f"{DOWNLOAD_FOLDER}/{filename}.md"
 
 
-def write_markdown_content_v2(content, filename, filepath):
-    if not os.path.exists(filepath):
-        os.makedirs(filepath)
-
-    full_path = filepath + "/" + filename + ".md"
-
-    with open(full_path, "w") as file:
-        file.write(content)
-    return f"{DOWNLOAD_FOLDER}/{filename}.md"
-
-
-def startup(idea: str):
+def startup(idea: str, lang: str = Language.ENGLISH.value):
     """
     split tasks from LLM (search from #param1 and get data, embedding and do #param2 actions, send message)
 
@@ -323,8 +280,13 @@ def startup(idea: str):
     5. send to twitter/zhihu/Others.
 
     :param idea:
+    :param lang:
     :return: markdown file about the operation method of your idea.
     """
+
+    if lang not in Language.get_all_langs():
+        raise ValueError(f"lang ({lang}) is not supported!")
+
     operation_name = f"operation_doc_{str(int(time.time()))}"
 
     relative_data = search_relative_data_from_ds(idea)
@@ -337,34 +299,34 @@ def startup(idea: str):
     summary_data = "\n".join(msgs)
     logger.info(f"\nsummary_data=\n{summary_data}")
 
-    image_prompt_dict = parse_image_info(summary_data)
+    image_prompt_dict = parse_image_info(summary_data, lang)
     logger.info(f"\ncompleted parse_image_info=\n{image_prompt_dict}")
 
     image_data = generate_images(image_prompt_dict)
     logger.info(f"\ncompleted generate_images=\n{image_data}")
 
     # if exist Text2Video model, add video info
-    video_prompt_dict = parse_video_info(summary_data)
+    video_prompt_dict = parse_video_info(summary_data, lang)
     logger.info(f"\ncompleted parse_video_info=\n{video_prompt_dict}")
 
     video_data = generate_videos(video_prompt_dict)
     logger.info(f"\ncompleted generate_videos=\n{video_data}")
 
-    prompt_req = OPERATE_PROMPT.format(summary_data, image_data, video_data)
+    prompt_req = OperatePromptManager.get_instance().get_prompt(lang).operate_prompt.format(summary_data, image_data,
+                                                                                            video_data)
     logger.info(f"\ngenerated markdown content prompt request=\n{prompt_req}")
 
     result = query_from_openai_proxy(prompt_req)
     logger.info(f"\ngenerated markdown content: \n{result}")
 
-    # If deployed in PROD, use write_markdown_content_v2 instead.
-    download_url = write_markdown_content_v2(
-        result, operation_name, GENERATED_OPERATE_DATA_DEFAULT_DIR
+    download_url = write_markdown_content(
+        result, operation_name, GENERATED_OPERATE_DATA if SERVER_MODE == 'local' else GENERATED_OPERATE_DATA_DEFAULT_DIR
     )
 
     logger.info(f"\nwrite file completed, download_url={download_url}")
     return download_url
 
 
-def generate_md_file(idea) -> str:
-    download_url = startup(idea)
+def generate_md_file(idea, lang: str = Language.ENGLISH.value) -> str:
+    download_url = startup(idea, lang)
     return download_url

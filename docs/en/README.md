@@ -24,14 +24,14 @@
     </a>
   </p>
 
-[**简体中文**](docs/zh/README_ZH.md) |[**Documents**](http://operategpt.cn/docs/)|[**WebSite**](http://operategpt.cn/)
+[**简体中文**](../zh/README_ZH.md) |[**Documents**](http://operategpt.cn/docs/)|[**WebSite**](http://operategpt.cn/)
 </div>
 
 <a href="http://dev.operategpt.cn">🚀🚀Experience Now!!</a>
 
-[🔥🔥Latest Release Version:V0.0.1](docs/en/OperateGPT.md)
+[🔥🔥Latest Release Version:V0.0.1](../en/OperateGPT.md)
 
-[🔥🔥Multi-Models Management](docs/en/multi_models_manage.md)
+[🔥🔥Multi-Models Management](../en/multi_models_manage.md)
 
 
 Using large language models and multi-agent technology, a single request can automatically generate marketing copy, images, and videos, and with one click, can be sent to multiple platforms, achieving a rapid transformation in marketing operations.
@@ -78,12 +78,12 @@ mkdir models & cd models
 git lfs install 
 git clone https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2
 
-# [Options]
+# [Optional]
 # Size: 94 GB, supported run in cpu model(RAM>14 GB). stablediffusion-proxy service is recommended, https://github.com/xuyuan23/stablediffusion-proxy
 git lfs install 
 git clone https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0
 
-# [Options]
+# [Optional]
 # Size: 16 GB, supported run in cpu model(RAM>16 GB). Text2Video service is recommended. https://github.com/xuyuan23/Text2Video
 git lfs install
 git clone https://huggingface.co/cerspense/zeroscope_v2_576w
@@ -104,7 +104,8 @@ python operategpt/providers/stablediffusion.py
 # deploy Text2Video service, if Text2Video proxy server is used, no need to execute it!
 python operategpt/providers/text2video.py
 
-python main.py "what is MetaGPT?"
+# Quick trial: two params: idea and language, `en is default`, also supported zh(chinese).
+python main.py "Prepare a travel plan to Australia" "en"
 ```
 
 ## Configuration

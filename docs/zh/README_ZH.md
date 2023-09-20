@@ -24,7 +24,7 @@
     </a>
   </p>
 
-[**English**](../../README.md) |[**文档**](http://operategpt.cn/web/#/602177878/152973408)|[**网站首页**](http://operategpt.cn/)
+[**English**](../en/README.md) |[**文档**](http://operategpt.cn/web/#/602177878/152973408)|[**网站首页**](http://operategpt.cn/)
 </div>
 
 <a href="http://dev.operategpt.cn">🚀🚀立刻体验！！</a>
@@ -93,8 +93,8 @@ cp .env.template .env
 # 启动stablediffusion服务, 如果使用了StableDiffusion代理，则无需执行!
 python operategpt/providers/stablediffusion.py
 
-# 执行项目，将会生成一个markdown文件 /data/operation_data/xxx.md
-python main.py "what is MetaGPT?"
+# 执行项目，将会生成一个markdown文件 /data/operation_data/xxx.md, 两个参数 `idea` 和 `lang`, 语言lang是可以缺省的，默认是en, 指定zh则生成中文文案
+python main.py "编写一个去成都的旅行计划" "zh"
 ```
 
 ## 配置

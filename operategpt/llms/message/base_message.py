@@ -3,7 +3,7 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Tuple, Optional
 
-from pydantic import BaseModel, Field, root_validator
+from pydantic import BaseModel, Field
 
 
 class PromptValue(BaseModel, ABC):

@@ -1,6 +1,6 @@
 import datetime
 
-from operate_task import execute_task, Task
+from operategpt_server import execute_task, Task
 
 
 def exec_task_test():
@@ -11,6 +11,7 @@ def exec_task_test():
         status="running",
         gmt_create=datetime.datetime,
         gmt_modified=datetime.datetime,
+        lang="zh",
         result="",
     )
     ret = execute_task(task)
