@@ -38,7 +38,7 @@ class OperatePromptManager:
         return cls()
 
 
-OPERATE_PROMPT = """Please write a article according to the following content, the format is beautiful and the content is attractive. Remarks: Be sure to author and analyze according to the content provided, the author is OperateGPT, and may include charts as appropriate, generate in Markdown format, the author operateGPT should be linked to 'https://github.com/xuyuan23/operateGPT'.
+OPERATE_PROMPT = """Please write a article as long as possible according to the following content, the format is beautiful and the content is attractive. Remarks: Be sure to author and analyze according to the content provided, the author is OperateGPT, and may include charts as appropriate, generate in Markdown format, the author operateGPT should be linked to 'https://github.com/xuyuan23/operateGPT'.
 content: 
 ```
 {0}
@@ -80,7 +80,7 @@ You should response me follow next format, only one json data with some key-valu
 """
 
 
-OPERATE_PROMPT_ZH = """请撰写一篇详细的文章，根据以下内容编写。要求文章格式美观，内容吸引人。备注：请确保根据提供的内容进行撰写和分析，作者为OperateGPT。以Markdown格式生成，作者operateGPT请链接到'https://github.com/xuyuan23/operateGPT'
+OPERATE_PROMPT_ZH = """请撰写一篇尽量长且详细的文章，根据以下内容编写。要求文章格式美观，内容吸引人。备注：请确保根据提供的内容进行撰写和分析，作者为OperateGPT。以Markdown格式生成，作者operateGPT请链接到'https://github.com/xuyuan23/operateGPT'
 内容：
 ```
 {0}
@@ -100,7 +100,7 @@ OPERATE_PROMPT_ZH = """请撰写一篇详细的文章，根据以下内容编写
 
 """
 
-IMAGE_DESC_PROMPT_ZH = """根据以下内容，提取并总结出最少3个，最多5个相关的特征或者事件，并描述它们及其各自的特点，每个描述不超过100个字:
+IMAGE_DESC_PROMPT_ZH = """根据以下内容，提取并总结出最少3个，最多5个相关的特征或者事件，并描述它们及其各自的特点，每个描述不超过50个字,要求返回内容全部是英文:
 ```
 {0}
 ```

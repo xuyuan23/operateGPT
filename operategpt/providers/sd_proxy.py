@@ -16,6 +16,7 @@ def sd_request(prompt: str, image_name: str):
 
     data = {"prompt": prompt, "image_name": image_name, "image_type": "png"}
 
+    print(f"Start generate image: prompy = {prompt}, image_name={image_name}")
     response = requests.post(url, headers=headers, data=json.dumps(data))
     result = response.json()
 

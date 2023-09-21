@@ -155,7 +155,7 @@ def process_tasks():
             session.commit()
             session.close()
         except Exception as ex:
-            print(f"周期任务执行失败，{str(ex)}")
+            print(f"Periodic task execution failed: {str(ex)}")
         time.sleep(1)
 
 
