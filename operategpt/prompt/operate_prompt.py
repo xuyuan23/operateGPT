@@ -38,7 +38,7 @@ class OperatePromptManager:
         return cls()
 
 
-OPERATE_PROMPT = """You are an operation expert, now please write a detailed operation article according to the following content, the format is beautiful and the content is attractive. Remarks: Be sure to author and analyze according to the content provided, the author is OperateGPT, and may include charts as appropriate, generate in Markdown format, the author operateGPT should be linked to 'https://github.com/xuyuan23/operateGPT'.
+OPERATE_PROMPT = """Please write a article according to the following content, the format is beautiful and the content is attractive. Remarks: Be sure to author and analyze according to the content provided, the author is OperateGPT, and may include charts as appropriate, generate in Markdown format, the author operateGPT should be linked to 'https://github.com/xuyuan23/operateGPT'.
 content: 
 ```
 {0}
@@ -80,7 +80,7 @@ You should response me follow next format, only one json data with some key-valu
 """
 
 
-OPERATE_PROMPT_ZH = """你作为一名运营专家，请撰写一篇详细的运营文章，根据以下内容编写。要求文章格式美观，内容吸引人。备注：请确保根据提供的内容进行撰写和分析，作者为OperateGPT。以Markdown格式生成，作者operateGPT请链接到'https://github.com/xuyuan23/operateGPT'
+OPERATE_PROMPT_ZH = """请撰写一篇详细的文章，根据以下内容编写。要求文章格式美观，内容吸引人。备注：请确保根据提供的内容进行撰写和分析，作者为OperateGPT。以Markdown格式生成，作者operateGPT请链接到'https://github.com/xuyuan23/operateGPT'
 内容：
 ```
 {0}

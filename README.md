@@ -122,6 +122,11 @@ T2V_PROXY_URL=127.0.0.1:7861
 ```
 - More Details see file `.env.template`
 
-## Video DEMO
+## Generated DEMOs
 
-https://github.com/xuyuan23/operateGPT/assets/26043513/bd585d00-f793-443d-a395-532d0c038e97
+- [What is DB-GPT?](docs/example/what_is_dbgpt.md)
+
+- [Travel to Chengdu](docs/example/travel_to_chengdu.md)
+
+- [Jingnu teaching design?](docs/example/jingnu_teaching_design.md)
+
