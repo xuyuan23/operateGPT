@@ -24,7 +24,7 @@
     </a>
   </p>
 
-[**English**](../../README.md) |[**文档**](http://operategpt.cn/web/#/602177878/152973408)|[**网站首页**](http://operategpt.cn/)
+[**English**](../../README.md) |[**文档**](http://operategpt.cn/docs/category/doczh)|[**网站首页**](http://operategpt.cn/)
 </div>
 
 <a href="http://dev.operategpt.cn">🚀🚀立刻体验！！</a>

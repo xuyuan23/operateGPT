@@ -24,7 +24,7 @@
     </a>
   </p>
 
-[**简体中文**](docs/zh/README_ZH.md) |[**Documents**](http://operategpt.cn/docs/)|[**WebSite**](http://operategpt.cn/)
+[**简体中文**](docs/zh/README_ZH.md) |[**Documents**](http://operategpt.cn/docs/category/docen)|[**WebSite**](http://operategpt.cn/)
 </div>
 
 <a href="http://dev.operategpt.cn">🚀🚀Experience Now!!</a>
