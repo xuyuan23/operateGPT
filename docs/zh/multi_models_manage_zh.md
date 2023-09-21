@@ -37,6 +37,18 @@
 
 ## 三、多模型管理API
 
+### 3.0 启动服务
+
+- 可移植代码模块点[这里](../../operategpt/llms)
+
+```commandline
+# 启动模型管理服务（也可以将API绑定到自己的应用服务中）
+python operategpt/llms/worker_manager.py
+
+# 【如果你已经有模型服务则可选】启动模型服务，需要配置一些相关参数，参考model_config.py文件
+python operategpt/llms/llmserver.py
+```
+
 ### 3.1 模型注册：
 - 模型注册需要将API注册到LLM框架服务中进行管理， 其中注册的关键参数需要选择性替换， 一般只需要替换{USER_PROMPT}
 

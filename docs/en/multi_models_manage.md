@@ -37,6 +37,20 @@ Deploying private inference services can be costly, often requiring dozens of gi
 
 ## 3. Multi-model management API
 
+### 3.0 Launch Services
+
+- Portable code module point [here](../../operategpt/llms)
+
+```commandline
+# Start the model management service (you can also bind the API to your own application service)
+python operategpt/llms/worker_manager.py
+
+# [Optional if you already have a model service] Start the model service, you need to configure some related parameters, refer to the model_config.py file
+python operategpt/llms/llmserver.py
+```
+
+
+
 ### 3.1 Model Registration
 - Model registration requires registering the API with the LLM framework service for management. The key parameters in the registration need to be selectively replaced, usually only requiring the replacement of {USER_PROMPT}.
 
