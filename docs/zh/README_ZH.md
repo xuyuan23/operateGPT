@@ -85,6 +85,7 @@ git clone https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0
 
 ``` commandline
 # 安装python依赖包
+yum install gcc-c++
 pip install -r requirements.txt
 
 # 复制.env.template文件内容到新创建的.env文件中，并修改.env文件中的内容

@@ -91,6 +91,7 @@ git clone https://huggingface.co/cerspense/zeroscope_v2_576w
 
 Then, download dependencies and launch your project.
 ```commandline
+yum install gcc-c++
 pip install -r requirements.txt
 
 # copy file `.env.template` to new file `.env`, and modify the params in `.env`.
