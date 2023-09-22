@@ -71,14 +71,14 @@ Example: Registering an Inference Service for a Large Model with the Model Manag
 
 # Initiate Registration Request
 curl -X POST -H "Content-Type: application/json" -d '{
-    "model_name": "proxyllm",
+    "model_name": "chatglm2-6b",
     "body": {
         "input": "{USER_PROMPT}",
         "model_name": "{MODEL_NAME}"
     },
-    "req_url_template": "http://127.0.0.1/api/generate",
+    "req_url_template": "http://127.0.0.1:8008/api/generate",
     "owner": "operategpt",
-    "response_extract": "data.items[].attributes.answer"
+    "response_extract": ""
 }' http://127.0.0.1:8007/api/server/register
 
 
@@ -89,6 +89,27 @@ curl -X POST -H "Content-Type: application/json" -d '{
 }
 
 ```
+
+If your LLM response result is json-format data, you should provide the method to extract the real result, for example:
+```
+{
+  "code": "200",
+  "data": {
+    "items": [
+      {
+        "attributes": {
+          "answer": "I am ChatGLM2-6B ..."
+        }
+      }
+    ]
+  },
+  "success": true,
+  "traceId": "0b46977c16953709036745431ea818"
+}
+```
+
+> response_extract = "data.items[].attributes.answer"
+
 
 
 ### 3.2 Query models
@@ -118,14 +139,14 @@ curl http://127.0.0.1:8007/api/server/workers
 # Initiate Offline Request
 curl -X POST -H "Content-Type: application/json" -d '{
     "model_name": "chatglm2-6b",
-    "req_url_template": "https://xxx/openapi/xxx/inference/query"
+    "req_url_template": "http://127.0.0.1:8008/api/generate"
 }' http://127.0.0.1:8007/api/server/offline
 
 
 # Return Result
 {
     "success": true,
-    "msg": "remove llm worker(model_name=chatglm2-6b, url=https://xxx/openapi/xxx/inference/query) succeed!"
+    "msg": "remove llm worker(model_name=chatglm2-6b, url=http://127.0.0.1:8008/api/generate) succeed!"
 }
 ```
 

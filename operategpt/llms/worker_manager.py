@@ -218,7 +218,7 @@ def chat(conn_dict: dict):
     return WorkerManager.get_instance().remove_worker(conn)
 
 
-@app.post("/api/server/workers")
+@app.get("/api/server/workers")
 def workers():
     wk_map: Dict[str, List["Worker"]] = WorkerManager.get_instance().get_all_workers()
 

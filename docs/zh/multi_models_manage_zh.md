@@ -42,6 +42,18 @@
 - 可移植代码模块点[这里](../../operategpt/llms)
 
 ```commandline
+# 推理模型服务配置, .env文件
+
+# 如果是自己要在本地部署私有化模型则设置如： LLM_NAME=chatglm2-6b
+# 如果是使用代理模型如ChatGPT则配置如下：
+LLM_NAME=proxyllm
+OPEN_AI_PROXY_SERVER_URL=https://api.openai.com/v1/chat/completions
+OPEN_AI_KEY=sk-xxx
+
+# 配置服务端口， 默认推理服务8008，LLM管理服务8007， 可以启动多个推理服务llmserver然后注册到管理服务上
+LLM_SERVER_PORT=8008
+LLM_MANAGE_SERVER_PORT=8007
+
 # 启动模型管理服务（也可以将API绑定到自己的应用服务中）
 python operategpt/llms/worker_manager.py
 
@@ -69,14 +81,14 @@ body是请求体
 
 # 注册请求
 curl -X POST -H "Content-Type: application/json" -d '{
-    "model_name": "proxyllm",
+    "model_name": "chatglm2-6b",
     "body": {
         "input": "{USER_PROMPT}",
         "model_name": "{MODEL_NAME}"
     },
-    "req_url_template": "http://127.0.0.1/api/generate",
-    "owner": "xuyuan23",
-    "response_extract": "data.items[].attributes.answer"
+    "req_url_template": "http://127.0.0.1:8008/api/generate",
+    "owner": "operategpt",
+    "response_extract": ""
 }' http://127.0.0.1:8007/api/server/register
 
 
@@ -87,6 +99,27 @@ curl -X POST -H "Content-Type: application/json" -d '{
 }
 
 ```
+
+如果你的LLM推理服务响应是一个json格式数据，你应该提供提取真正结果的方法，例如：
+
+```
+{
+  "code": "200",
+  "data": {
+    "items": [
+      {
+        "attributes": {
+          "answer": "I am ChatGLM2-6B ..."
+        }
+      }
+    ]
+  },
+  "success": true,
+  "traceId": "0b46977c16953709036745431ea818"
+}
+```
+
+> response_extract = "data.items[].attributes.answer"
 
 
 ### 3.2 模型查询
@@ -116,14 +149,14 @@ curl http://127.0.0.1:8007/api/server/workers
 # 发起下线请求
 curl -X POST -H "Content-Type: application/json" -d '{
     "model_name": "chatglm2-6b",
-    "req_url_template": "https://xxx/openapi/xxx/inference/query"
+    "req_url_template": "http://127.0.0.1:8008/api/generate"
 }' http://127.0.0.1:8007/api/server/offline
 
 
 # 返回结果
 {
     "success": true,
-    "msg": "remove llm worker(model_name=chatglm2-6b, url=https://xxx/openapi/xxx/inference/query) succeed!"
+    "msg": "remove llm worker(model_name=chatglm2-6b, url=http://127.0.0.1:8008/api/generate) succeed!"
 }
 ```
 

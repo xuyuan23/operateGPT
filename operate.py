@@ -30,7 +30,9 @@ OPEN_AI_KEY = os.getenv("OPEN_AI_KEY")
 VECTOR_STORE_TYPE = os.getenv("VECTOR_STORE_TYPE", "Chroma")
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "all-MiniLM-L6-v2")
 DOWNLOAD_FOLDER = os.getenv("DOWNLOAD_FOLDER", GENERATED_OPERATE_DATA)
-GENERATED_OPERATE_DATA_DEFAULT_DIR = os.getenv("GENERATED_OPERATE_DATA_DEFAULT_DIR", "/var/www/html/experience")
+GENERATED_OPERATE_DATA_DEFAULT_DIR = os.getenv(
+    "GENERATED_OPERATE_DATA_DEFAULT_DIR", "/var/www/html/experience"
+)
 LANGUAGE = os.getenv("LANGUAGE", "en")
 SERVER_MODE = os.getenv("SERVER_MODE", "local")
 
@@ -106,7 +108,11 @@ def embedding_knowledge(content: str, vector_store_name: str):
 
 
 def parse_image_info(summary_data: str, lang: str) -> dict:
-    images_prompt_info = OperatePromptManager.get_instance().get_prompt(lang).image_desc_prompt.format(summary_data)
+    images_prompt_info = (
+        OperatePromptManager.get_instance()
+        .get_prompt(lang)
+        .image_desc_prompt.format(summary_data)
+    )
     logger.info(
         f"\n====================================images_prompt_info=\n{images_prompt_info}"
     )
@@ -129,11 +135,11 @@ def parse_image_info(summary_data: str, lang: str) -> dict:
 
 def download_file(download_url: str) -> str:
     """
-        Download image file, store in current dir.
+    Download image file, store in current dir.
     """
     try:
-        parts = download_url.rsplit('/', 2)
-        origin_file = f'{parts[-2]}/{parts[-1]}'
+        parts = download_url.rsplit("/", 2)
+        origin_file = f"{parts[-2]}/{parts[-1]}"
         filename = f"{GENERATED_OPERATE_DATA_DEFAULT_DIR}/{origin_file}"
         os.makedirs(f"{GENERATED_OPERATE_DATA_DEFAULT_DIR}/{parts[-2]}", exist_ok=True)
         response = requests.get(download_url)
@@ -152,10 +158,10 @@ def download_file(download_url: str) -> str:
 
 def download_video_file(download_url: str) -> str:
     """
-        Download video file, store in current dir.
+    Download video file, store in current dir.
     """
     try:
-        parts = download_url.rsplit('/', 1)
+        parts = download_url.rsplit("/", 1)
         origin_file = parts[-1]
         filename = f"{GENERATED_OPERATE_DATA_DEFAULT_DIR}/{origin_file}"
         response = requests.get(download_url)
@@ -189,9 +195,11 @@ def generate_images(converted_dict: dict) -> str:
         # start request stable diffusion:
         for image_name, image_prompt in converted_dict.items():
             index += 1
-            download_url = sd_proxy.sd_request(prompt=image_prompt, image_name=image_name)
+            download_url = sd_proxy.sd_request(
+                prompt=image_prompt, image_name=image_name
+            )
 
-            if SERVER_MODE == 'online':
+            if SERVER_MODE == "online":
                 download_url = download_file(download_url)
 
             image_dict.append({"image_name": image_name, "url": download_url})
@@ -205,7 +213,11 @@ def generate_images(converted_dict: dict) -> str:
 
 
 def parse_video_info(summary_data: str, lang: str) -> dict:
-    videos_prompt_info = OperatePromptManager.get_instance().get_prompt(lang).video_desc_prompt.format(summary_data)
+    videos_prompt_info = (
+        OperatePromptManager.get_instance()
+        .get_prompt(lang)
+        .video_desc_prompt.format(summary_data)
+    )
     logger.info(
         f"\n====================================videos_prompt_info=\n{videos_prompt_info}"
     )
@@ -241,7 +253,7 @@ def generate_videos(converted_dict: dict) -> str:
             t2v_prompt = T2VPrompt()
             t2v_prompt.prompt = video_prompt
             download_url = t2v_request(t2v_prompt)
-            if SERVER_MODE == 'online':
+            if SERVER_MODE == "online":
                 download_url = download_video_file(download_url)
             if download_url is None:
                 continue
@@ -264,7 +276,7 @@ def write_markdown_content(content, filename, filepath):
 
     with open(full_path, "w") as file:
         file.write(content)
-    return full_path if SERVER_MODE == 'local' else f"{DOWNLOAD_FOLDER}/{filename}.md"
+    return full_path if SERVER_MODE == "local" else f"{DOWNLOAD_FOLDER}/{filename}.md"
 
 
 def startup(idea: str, lang: str = Language.ENGLISH.value):
@@ -312,15 +324,22 @@ def startup(idea: str, lang: str = Language.ENGLISH.value):
     video_data = generate_videos(video_prompt_dict)
     logger.info(f"\ncompleted generate_videos=\n{video_data}")
 
-    prompt_req = OperatePromptManager.get_instance().get_prompt(lang).operate_prompt.format(summary_data, image_data,
-                                                                                            video_data)
+    prompt_req = (
+        OperatePromptManager.get_instance()
+        .get_prompt(lang)
+        .operate_prompt.format(summary_data, image_data, video_data)
+    )
     logger.info(f"\ngenerated markdown content prompt request=\n{prompt_req}")
 
     result = query_from_openai_proxy(prompt_req)
     logger.info(f"\ngenerated markdown content: \n{result}")
 
     download_url = write_markdown_content(
-        result, operation_name, GENERATED_OPERATE_DATA if SERVER_MODE == 'local' else GENERATED_OPERATE_DATA_DEFAULT_DIR
+        result,
+        operation_name,
+        GENERATED_OPERATE_DATA
+        if SERVER_MODE == "local"
+        else GENERATED_OPERATE_DATA_DEFAULT_DIR,
     )
 
     logger.info(f"\nwrite file completed, download_url={download_url}")

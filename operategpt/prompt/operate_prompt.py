@@ -6,7 +6,9 @@ class OperatePrompt:
     image_desc_prompt: str
     video_desc_prompt: str
 
-    def __init__(self, operate_prompt: str, image_decs_prompt: str, video_desc_prompt: str):
+    def __init__(
+        self, operate_prompt: str, image_decs_prompt: str, video_desc_prompt: str
+    ):
         self.operate_prompt = operate_prompt
         self.image_desc_prompt = image_decs_prompt
         self.video_desc_prompt = video_desc_prompt
@@ -20,8 +22,12 @@ class OperatePromptManager:
             cls._instance = super().__new__(cls)
             cls._instance.prompts = {}
             print("INIT operate manager running!")
-            prompt_en: OperatePrompt = OperatePrompt(OPERATE_PROMPT, IMAGE_DESC_PROMPT, VIDEO_DESC_PROMPT)
-            prompt_zh: OperatePrompt = OperatePrompt(OPERATE_PROMPT_ZH, IMAGE_DESC_PROMPT_ZH, VIDEO_DESC_PROMPT_ZH)
+            prompt_en: OperatePrompt = OperatePrompt(
+                OPERATE_PROMPT, IMAGE_DESC_PROMPT, VIDEO_DESC_PROMPT
+            )
+            prompt_zh: OperatePrompt = OperatePrompt(
+                OPERATE_PROMPT_ZH, IMAGE_DESC_PROMPT_ZH, VIDEO_DESC_PROMPT_ZH
+            )
             cls._instance.prompts[Language.ENGLISH.value] = prompt_en
             cls._instance.prompts[Language.CHINESE.value] = prompt_zh
             print("INIT operate manager succeed!")
@@ -121,4 +127,3 @@ VIDEO_DESC_PROMPT_ZH = """根据以下内容，总结1个内容相关的行为�
 <VideoPrompt> {{"video-name-1": "<summary content1>"}} </VideoPrompt>
 
 """
-

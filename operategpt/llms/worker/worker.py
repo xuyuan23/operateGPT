@@ -37,7 +37,7 @@ class WorkerConnection:
         self,
         model_name: str,
         req_type: str = "POST",
-        req_url_template: str = "http://localhost:8008/generate",
+        req_url_template: str = "http://localhost:8008/api/generate",
         req_param: dict = None,
         is_stream: bool = False,
         header: dict = None,

@@ -73,14 +73,28 @@ class User(Base):
 def create_task(user_id: int, prompt: str, lang: str = "en"):
     try:
         if lang not in Language.get_all_langs():
-            return {"success": False, "msg": f"create task failed: lang {lang} is not supported!"}
+            return {
+                "success": False,
+                "msg": f"create task failed: lang {lang} is not supported!",
+            }
         task_uuid = generate_uuid()
         session = Session()
-        task = Task(user_id=user_id, prompt=prompt, status="init", uuid=task_uuid, gmt_create=datetime.now(), gmt_modified=datetime.now(), lang=lang)
+        task = Task(
+            user_id=user_id,
+            prompt=prompt,
+            status="init",
+            uuid=task_uuid,
+            gmt_create=datetime.now(),
+            gmt_modified=datetime.now(),
+            lang=lang,
+        )
         session.add(task)
         session.commit()
         session.close()
-        return {"success": True, "msg": f"create task success, please remember taskid for query result! uuid= {task_uuid}"}
+        return {
+            "success": True,
+            "msg": f"create task success, please remember taskid for query result! uuid= {task_uuid}",
+        }
     except Exception as e:
         return {"success": False, "msg": f"create task failed: {str(e)}"}
 
@@ -89,7 +103,11 @@ def create_task(user_id: int, prompt: str, lang: str = "en"):
 def list_tasks(task_uuid: str):
     session = Session()
     task = session.query(Task).filter(Task.uuid == task_uuid).first()
-    init_task_count = session.query(func.count(Task.id)).filter(Task.id < task.id, Task.status == 'init').scalar()
+    init_task_count = (
+        session.query(func.count(Task.id))
+        .filter(Task.id < task.id, Task.status == "init")
+        .scalar()
+    )
     session.close()
     task_dict = {
         "id": task.id,
@@ -100,7 +118,7 @@ def list_tasks(task_uuid: str):
         "gmt_modified": str(task.gmt_modified),
         "lang": str(task.lang),
         "result": task.result,
-        "queue_count": init_task_count
+        "queue_count": init_task_count,
     }
     return Result.success(task_dict)
 
@@ -166,6 +184,7 @@ def execute_task(task):
 
 def start_task_processing():
     import threading
+
     thread = threading.Thread(target=process_tasks)
     thread.start()
 

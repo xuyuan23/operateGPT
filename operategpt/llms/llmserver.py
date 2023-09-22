@@ -22,7 +22,7 @@ app = FastAPI()
 worker: Worker = Worker(LLM_NAME)
 
 
-@app.post("/generate")
+@app.post("/api/generate")
 def gen(req: LLMReq):
     print(f"input={req.input}")
     msg: ModelMessage = ModelMessage(role="human", content=req.input)
