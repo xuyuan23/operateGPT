@@ -42,6 +42,18 @@ Deploying private inference services can be costly, often requiring dozens of gi
 - Portable code module point [here](../../operategpt/llms)
 
 ```commandline
+
+# Inference model service configuration, .env file
+# If you are deploying a private model locally, set it as follows: LLM_NAME=chatglm2-6b
+# If you are using a proxy model like ChatGPT, configure it as follows:
+LLM_NAME=proxyllm
+OPEN_AI_PROXY_SERVER_URL=https://api.openai.com/v1/chat/completions
+OPEN_AI_KEY=sk-xxx
+
+# Configure server ports, default inference service port is 8008, LLM management service port is 8007. You can start multiple inference services (llmserver) and register them with the management service.
+LLM_SERVER_PORT=8008
+LLM_MANAGE_SERVER_PORT=8007
+
 # Start the model management service (you can also bind the API to your own application service)
 python operategpt/llms/worker_manager.py
 
